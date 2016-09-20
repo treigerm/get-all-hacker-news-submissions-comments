@@ -1,0 +1,24 @@
+version: '2'
+services:
+  downloader:
+    build: .
+    restart: always
+    command: python hacker_news_stories_all.py
+    depends_on:
+      - postgreSQL
+    environment:
+      - DB=postgreSQL
+    volumes:
+      - ./data/json:/usr/src/app/data/json
+  postgreSQL:
+    restart: always
+    image: sameersbn/postgresql:9.5-2
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=false
+      - DB_USER=treigerm
+      - DB_PASS=1234
+      - DB_NAME=hacker_news
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
